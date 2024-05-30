@@ -1,0 +1,111 @@
+#Self signed cert creation
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=amz Inc./CN=amazonaws.com' -keyout ca.key -out ca.crt
+openssl req -out server.csr -newkey rsa:2048 -nodes -keyout server.key -subj "/CN=ec2-65-0-225-217.ap-south-1.compute.amazonaws.com/O=amz"
+openssl x509 -req -sha256 -days 365 -CA ca.crt -CAkey ca.key -set_serial 2 -in server.csr -out server.crt
+---
+kubectl create ns webapp
+kubectl -n webapp create secret generic data --from-file=index.html=index.html --from-file=1kb.html=1kb.html
+kubectl -n webapp create configmap nginx --from-file=nginx.conf=nginx.conf
+kubectl -n webapp create secret generic ssl-certs --from-file=tls.key=server.key --from-file=tls.crt=server.crt --from-file=ca.crt=ca.crt
+kubectl -n webapp apply -f dep.yaml
+---
+##nginx.conf
+events {
+}
+
+http {
+  log_format main '$remote_addr - $remote_user [$time_local]  $status '
+  '"$request" $body_bytes_sent "$http_referer" '
+  '"$http_user_agent" "$http_x_forwarded_for"';
+  access_log /var/log/nginx/access.log main;
+  error_log  /var/log/nginx/error.log;
+  sendfile on;
+
+  server {
+    listen 80;
+    listen 443 ssl;
+
+    root /etc/data/;
+    index index.html;
+    ssl_certificate /etc/certs/tls.crt;
+    ssl_certificate_key /etc/certs/tls.key;
+
+  }
+}
+---
+##index.html
+HELLO WEB ! 
+---
+## dep.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+  labels:
+    run: webapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    protocol: TCP
+    name: https
+  selector:
+    run: webapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      run: webapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: nginx
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx
+          readOnly: true
+        - name: certs
+          mountPath: /etc/certs
+          readOnly: true
+        - name: data
+          mountPath: /etc/data
+          readOnly: true
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx
+      - name: certs
+        secret:
+          secretName: ssl-certs
+      - name: data
+        secret:
+           secretName: data
+---
+##1kb.html
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+1 Kb data file is here!
+---

@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+  labels:
+    run: webapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    protocol: TCP
+    name: https
+  selector:
+    run: webapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      run: webapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: nginx
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx
+          readOnly: true
+        - name: certs
+          mountPath: /etc/certs
+          readOnly: true
+        - name: data
+          mountPath: /etc/data
+          readOnly: true
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx
+      - name: certs
+        secret:
+          secretName: ssl-certs
+      - name: data
+        secret:
+           secretName: data
+
