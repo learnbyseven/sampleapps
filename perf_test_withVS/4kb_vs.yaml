@@ -1,0 +1,54 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: myapp
+  namespace: nginx-ingress
+spec:
+  host: ec2-65-0-225-217.ap-south-1.compute.amazonaws.com ## To be replaced by actual host or domain name 
+  routes:
+  - path: /
+    action:
+     return:
+       code: 200
+       type: text/plain
+       body: "HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              HELLO from TEST!HELLO from TEST!HELLO from TEST !HELLO from TEST !HELLO from TEST ! Hello from Test
+              ${server_protocol},${remote_addr},${host}\n"

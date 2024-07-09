@@ -1,0 +1,15 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServerRoute
+metadata:
+  name: webapp443
+spec:
+  host: ec2-65-0-225-217.ap-south-1.compute.amazonaws.com
+  upstreams:
+  - name: webapp443
+    service: webapp443
+    port: 443
+  subroutes:
+  - path: /
+    action:
+     pass: webapp443
+  

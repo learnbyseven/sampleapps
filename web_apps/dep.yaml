@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: webapp
+  name: webapp80
   labels:
     run: webapp
 spec:
@@ -10,6 +10,17 @@ spec:
   - port: 80
     protocol: TCP
     name: http
+  selector:
+    run: webapp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp443
+  labels:
+    run: webapp
+spec:
+  ports:
   - port: 443
     protocol: TCP
     name: https
@@ -32,7 +43,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: nginx
+        image: giriraj789/np:v1
         ports:
         - containerPort: 80
         - containerPort: 443
@@ -49,10 +60,10 @@ spec:
       volumes:
       - name: nginx-config
         configMap:
-          name: nginx
+          name: nginxconfig
       - name: certs
         secret:
-          secretName: ssl-certs
+          secretName: certs
       - name: data
         secret:
            secretName: data

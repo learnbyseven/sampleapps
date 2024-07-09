@@ -1,0 +1,17 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: webappvs
+  namespace: webapp
+spec:
+  host: ec2-65-0-225-217.ap-south-1.compute.amazonaws.com ## To be replaced by actual host or domain name 
+  tls:
+    secret: webapp-certs
+  upstreams:
+  - name: webapp80
+    service: webapp80
+    port: 80
+  routes:
+  - path: /
+    action:
+      pass: webapp80

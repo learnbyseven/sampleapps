@@ -1,0 +1,17 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: webapp
+  namespace: nginx-ingress
+spec:
+  host: ec2-65-0-225-217.ap-south-1.compute.amazonaws.com ## To be replaced by actual host or domain name 
+  listener:
+    http: webapp80
+    https: webapp443
+  tls:
+    secret: webapp-certs
+  routes:
+  - path: /
+    route: webapp/webapp80
+  - path: /
+    route: webapp/webapp443
